@@ -9,6 +9,8 @@
 
   <!-- LINK TO FIREBASE GOES HERE -->
   <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+  <!-- Link to Moment.js should go here -->
+  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 
 </head>
 <body>
@@ -117,11 +119,14 @@
 		database.ref("/trains").on("child_added", function(snapshot) {
 
 		var sv = snapshot.val();
+		var then = moment(sv.first_train_time).format("mmm");
+		var now = moment().format("mmm");
+
 		var train_rec = "<tr>"+
 			"<th>"+sv.train_name+"</th>"+
 			"<th>"+sv.destination+"</th>"+
-			"<th>"+sv.first_train_time+"</th>"+
 			"<th>"+sv.frequency+"</th>"+
+			"<th>"+sv.first_train_time+"</th>"+
 			"</tr>"
 		$("#train-data").append(train_rec);
 
