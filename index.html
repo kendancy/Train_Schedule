@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kenny RR Schedule</title>
+
+	  <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="css/style.css">
+
+  <!-- LINK TO FIREBASE GOES HERE -->
+  <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+
+</head>
+<body>
+    <!-- Jumbotron -->
+    <div class="container">
+	    <div class="jumbotron myjumbo">
+	      <h1 class="text-center">Kenny RR</h1>
+	      <br>
+	      <h2 class="text-center">All Aboard</h2>
+	    </div>
+     <!-- Train List -->
+     <div class="col-lg-12">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Current Train Schedule</h3>
+          </div>
+          <div class="panel-body" id="train-list">
+          </div>
+          <table class="table">
+          	<tr>
+          		<th>Train Name</th>
+          		<th>Destination</th>
+          		<th>Frequency (min)</th>
+          		<th>Next Arrival</th>
+          		<th>Minutes Away</th>
+          	</tr>
+          		<th></th>
+          		<th></th>
+          		<th></th>
+          		<th></th>
+          		<th></th>
+          </table>
+        </div>
+      </div>
+    <!-- Sign-up Form (note the various input "types")-->
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Add Train to Schedule</h3>
+          </div>
+			<form role="form">
+			  <div class="form-group">
+			    <label for="train-name-input">Train Name:</label>
+			    <input class="form-control" id="train-name-input" type="text">
+			  </div>
+			  <div class="form-group">
+			    <label for="destination-input">Destination:</label>
+			    <input class="form-control" id="destination-input" type="text">
+			  </div>
+			  <div class="form-group">
+			    <label for="first-train-time-input">First Train time (HH:mm) (24hr):</label>
+			    <input class="form-control" id="first-train-time-input" type="time">
+			  </div>
+			  <div class="form-group">
+			    <label for="frequency-input">Frequency (min):</label>
+			    <textarea class="form-control" id="frequency-input" type="number"></textarea>
+			  </div>
+			  <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+			</form>
+		</div>
+	</div>
+
+	</div>
+
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery.js"></script>
+
+	<script>
+	    // Initialize Firebase
+	    var config = {
+	      apiKey: "AIzaSyDA4CQOX27BpVixltsQcef7GlBuLrPRQJ0",
+	      authDomain: "coding-kd-project.firebaseapp.com",
+	      databaseURL: "https://coding-kd-project.firebaseio.com",
+	      projectId: "coding-kd-project",
+	      storageBucket: "coding-kd-project.appspot.com",
+	      messagingSenderId: "1040246489255"
+	    };
+
+	    firebase.initializeApp(config);
+
+	    // Create a variable to reference the database.
+	    var database = firebase.database();
+
+	    // Initial Values
+	    var train_name = "";
+	    var destination = "";
+	    var first_train_time;
+	    var frequency;
+
+    	// Capture Button Click
+    	$("#add-user").on("click", function(event) {
+
+	      	event.preventDefault();
+
+//console.log($("#train-name-input").val().trim());
+//console.log($("#destination-input").val().trim());
+//console.log($("#first-train-time-input").val().trim());
+//console.log($("#frequency-input").val().trim());
+
+			// Grabbed values from text boxes
+			train_name = $("#train-name-input").val().trim();
+			destination = $("#destination-input").val().trim();
+			first_train_time = $("#first-train-time-input").val().trim();
+			frequency = $("#frequency-input").val().trim();
+
+	      // Code for handling the push
+	      database.ref("/trains").push({
+	        train_name: train_name,
+	        destination: destination,
+	        first_train_time: first_train_time,
+	        frequency: frequency
+	      });
+
+	    });
+
+		database.ref("/trains").on("child_added", function(snapshot) {
+
+		var sv = snapshot.val();
+console.log(sv);
+console.log("child added");
+
+  		});
+
+	</script>
+</body>
+</html>
