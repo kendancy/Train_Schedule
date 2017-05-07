@@ -103,28 +103,23 @@
 
 	      	event.preventDefault();
 
-//console.log($("#train-name-input").val().trim());
-//console.log($("#destination-input").val().trim());
-//console.log($("#first-train-time-input").val().trim());
-//console.log($("#frequency-input").val().trim());
-
 			// Grabbed values from text boxes
 			train_name = $("#train-name-input").val().trim();
 			destination = $("#destination-input").val().trim();
 			first_train_time = $("#first-train-time-input").val().trim();
 			frequency = $("#frequency-input").val().trim();
 
-	      // Code for handling the push
-	      database.ref("/trains").push({
-	        train_name: train_name,
-	        destination: destination,
-	        first_train_time: first_train_time,
-	        frequency: frequency
-	      });
+			// Code for handling the push
+			database.ref().push({
+			train_name: train_name,
+			destination: destination,
+			first_train_time: first_train_time,
+			frequency: frequency
+	      	});
 
 	    });
 
-		database.ref("/trains").on("child_added", function(snapshot) {
+		database.ref().on("child_added", function(snapshot) {
 
 		var sv = snapshot.val();
 console.log(sv);
