@@ -27,7 +27,7 @@
           </div>
           <div class="panel-body" id="train-list">
           </div>
-          <table class="table">
+          <table class="table" id="train-data">
           	<tr>
           		<th>Train Name</th>
           		<th>Destination</th>
@@ -35,11 +35,6 @@
           		<th>Next Arrival</th>
           		<th>Minutes Away</th>
           	</tr>
-          		<th></th>
-          		<th></th>
-          		<th></th>
-          		<th></th>
-          		<th></th>
           </table>
         </div>
       </div>
@@ -110,7 +105,7 @@
 			frequency = $("#frequency-input").val().trim();
 
 			// Code for handling the push
-			database.ref().push({
+			database.ref("/trains").push({
 			train_name: train_name,
 			destination: destination,
 			first_train_time: first_train_time,
@@ -119,11 +114,16 @@
 
 	    });
 
-		database.ref().on("child_added", function(snapshot) {
+		database.ref("/trains").on("child_added", function(snapshot) {
 
 		var sv = snapshot.val();
-console.log(sv);
-console.log("child added");
+		var train_rec = "<tr>"+
+			"<th>"+sv.train_name+"</th>"+
+			"<th>"+sv.destination+"</th>"+
+			"<th>"+sv.first_train_time+"</th>"+
+			"<th>"+sv.frequency+"</th>"+
+			"</tr>"
+		$("#train-data").append(train_rec);
 
   		});
 
